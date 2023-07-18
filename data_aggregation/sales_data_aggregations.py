@@ -98,10 +98,10 @@ def sales_analysis_for_weather_condition(sorted_data: pd.DataFrame) -> None:
     Output is writen to data warehouse
     """
     sorted_data['order_year'] = sorted_data['order_date'].apply(lambda x: (dt.strptime(x, '%Y-%m-%d')).year)
-    avg_sales_amt_per_weather_condition = sorted_data.groupby(['weather_conditions', 'order_year'])['price'].sum()
-    ttl_sales_qty_per_weather_condition = sorted_data.groupby(['weather_conditions', 'order_year'])['quantity'].sum()
+    avg_sales_amt_per_weather_condition = sorted_data.groupby(['weather_conditions', 'order_year'])['price'].sum().reset_index()
+    ttl_sales_qty_per_weather_condition = sorted_data.groupby(['weather_conditions', 'order_year'])['quantity'].sum().reset_index()
     ttl_product_sold_per_weather_condition = sorted_data.groupby(['weather_conditions', 'order_year', 'product_id'])[
-        'quantity'].sum()
+        'quantity'].sum().reset_index()
     best_sold_product_per_weather_conditions = ttl_product_sold_per_weather_condition.groupby(
         ['weather_conditions', 'order_year']).nlargest(3).reset_index(level=[0, 1], drop=True)
     ttl_product_sold_per_weather_condition = ttl_product_sold_per_weather_condition.reset_index()
