@@ -29,6 +29,9 @@ Ensure installation of the below in your machine
 3. run <br> ``docker build -t dp_sales_analysis .``
 4. run <br> ``docker run -v $(pwd):/dp_sales_analysis dp_sales_analysis``
 
+## NOTE:
+
+I have used my API_KEY for the weather data extraction, but in case that doesn't work, please create a new api_key and replace the existing one`api_key` 
 
 ## Database Schema
 

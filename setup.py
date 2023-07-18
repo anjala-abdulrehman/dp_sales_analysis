@@ -1,17 +1,18 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='your_project_name',
+    name='dp_sales_pipeline',
     version='1.0.0',
-    description='A short description of your project',
-    author='Your Name',
-    author_email='yourname@example.com',
+    description='ETL for retail sales data',
+    author='Anjala',
+    author_email='anjala.lahan@gmail.com',
     packages=find_packages(),
     install_requires=[
         'pandas==1.3.0',
         'pydantic==1.8.2',
         'email-validator==1.1.3',
         'requests==2.26.0',
+        'tenacity'
     ],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
