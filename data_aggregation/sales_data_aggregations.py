@@ -11,6 +11,10 @@ logger.setLevel(logging.DEBUG)
 
 # Calculate total sales amount per customer.
 def ttl_sales_amt_per_cust(sorted_data: pd.DataFrame) -> None:
+    """
+    :param sorted_data: sorted master data
+    Output is writen to data warehouse
+    """
     sorted_data['ttl_sales_amt_per_cust'] = sorted_data.groupby(['customer_id', 'order_date'])['price'].cumsum()
     sorted_data = sorted_data[["customer_id", "order_date", "ttl_sales_amt_per_cust"]]
     aggregations_to_dw(sorted_data, db_name, 'ttl_sales_amt_per_cust')
@@ -18,6 +22,10 @@ def ttl_sales_amt_per_cust(sorted_data: pd.DataFrame) -> None:
 
 # Determine the average order quantity per product.
 def avg_order_qty_per_prod(sorted_data: pd.DataFrame) -> None:
+    """
+    :param sorted_data: sorted master data
+    Output is writen to data warehouse
+    """
     running_sum = sorted_data.groupby(['product_id', 'order_date'])['quantity'].cumsum()
     cumulative_count = sorted_data.groupby(['product_id', 'order_date']).cumcount() + 1
     sorted_data['avg_order_qty_per_prod'] = running_sum / cumulative_count
@@ -28,6 +36,10 @@ def avg_order_qty_per_prod(sorted_data: pd.DataFrame) -> None:
 # Identify the top-selling products for customers. (for ?)
 
 def get_top_selling_stats(sorted_data: pd.DataFrame) -> None:
+    """
+    :param sorted_data: sorted master data
+    Output is writen to data warehouse
+    """
     sorted_data['top_selling_prod_for_cust'] = sorted_data.groupby(['customer_id', 'order_date'])[
         'product_id'].cumcount()
 
@@ -57,6 +69,10 @@ def get_top_selling_stats(sorted_data: pd.DataFrame) -> None:
 # 1. reordered products Aggregations
 
 def reordered_products_stats(master_data: pd.DataFrame) -> None:
+    """
+    :param master_data: master data
+    Output is writen to data warehouse
+    """
     orders_data = master_data.sort_values(['customer_id', 'order_id'])
     orders_data['reordered_flag'] = orders_data.groupby(['customer_id', 'product_id'])[
         'order_id'].shift().notnull().astype(
@@ -77,6 +93,10 @@ def reordered_products_stats(master_data: pd.DataFrame) -> None:
 
 # Include weather data in the analysis (e.g., average sales amount per weather condition).
 def sales_analysis_for_weather_condition(sorted_data: pd.DataFrame) -> None:
+    """
+    :param sorted_data: master data
+    Output is writen to data warehouse
+    """
     sorted_data['order_year'] = sorted_data['order_date'].apply(lambda x: (dt.strptime(x, '%Y-%m-%d')).year)
     avg_sales_amt_per_weather_condition = sorted_data.groupby(['weather_conditions', 'order_year'])['price'].sum()
     ttl_sales_qty_per_weather_condition = sorted_data.groupby(['weather_conditions', 'order_year'])['quantity'].sum()
@@ -92,6 +112,10 @@ def sales_analysis_for_weather_condition(sorted_data: pd.DataFrame) -> None:
 
 
 def generate_and_write_aggregations(master_data: pd.DataFrame):
+    """
+    :param master_data: master data
+    Output is writen to data warehouse
+    """
     sorted_df = master_data.sort_values('order_date')
 
     aggregations = [

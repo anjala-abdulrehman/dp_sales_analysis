@@ -24,7 +24,7 @@ Ensure installation of the below in your machine
 ## Usage
 
 
-1. Download the repo from github with <br> ``git clone <<>>``
+1. Download the repo from github with <br> ``git clone git@github.com:anjala-abdulrehman/dp_sales_analysis.git``
 2. Navigate to the root directory of the project <br> ``cd dp_sales_analysis`` 
 3. run <br> ``docker build -t dp_sales_analysis .``
 4. run <br> ``docker run -v $(pwd):/dp_sales_analysis dp_sales_analysis``

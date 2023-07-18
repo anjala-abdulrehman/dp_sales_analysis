@@ -16,7 +16,11 @@ logger.setLevel(logging.DEBUG)
 db_name = db_config['raw_db_name']
 
 
-def load_orders_data(path=urls_and_path_config['sales_data_path']):
+def load_orders_data(path=urls_and_path_config['sales_data_path']) -> pd.DataFrame:
+    """
+    :param path: sales data path
+    :return: orders data:
+    """
     orders_data = pd.read_csv(path)
     validate_orders_data(orders_data)
     data_to_dw(orders_data, db_name, 'orders')
@@ -26,14 +30,22 @@ def load_orders_data(path=urls_and_path_config['sales_data_path']):
     return orders_data
 
 
-@retry(stop=stop_after_attempt(3), wait=wait_fixed(10))
+@retry(stop=stop_after_attempt(3), wait=wait_fixed(1))
 def _query_users_api(url: str):
+    """
+    :param url: users api url
+    :return: users data as a row
+    """
     response = requests.get(url)
     response.raise_for_status()
     return pd.json_normalize(response.json())
 
 
 def query_users_api(url: str = urls_and_path_config['users_url']) -> pd.DataFrame:
+    """
+    :param url: url to query users
+    :return: users data
+    """
     try:
         users_data = _query_users_api(url)
         users_data = users_data[users_tbl_config['cols']]
@@ -48,6 +60,10 @@ def query_users_api(url: str = urls_and_path_config['users_url']) -> pd.DataFram
 
 
 def query_weather_api(master_data: pd.DataFrame) -> pd.DataFrame:
+    """
+    :param master_data: combined data
+    :return: master data with weather data added
+    """
     master_data[['temperature', 'feels_like', 'weather_conditions']] = list(
         executor.map(apply, master_data['address_geo_lat'], master_data['address_geo_lng']))
 
@@ -79,6 +95,10 @@ def apply(lat, lon):
 
 
 def raw_data_to_dl():
+    """
+    Runs data from the sources and merged and then loaded to datalake
+    :return: All data from sources
+    """
     logger.info("Starting execution: Fetching Sales Data")
     sales_data = load_orders_data()
 

@@ -8,6 +8,9 @@ logger.setLevel(logging.DEBUG)
 
 
 def raw_table_creation_sqllite():
+    """
+    Creates raw sources data tables
+    """
     data_conn = sqlite3.connect('raw_source_data.db')
     data_cursor = data_conn.cursor()
 

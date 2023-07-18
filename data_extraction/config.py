@@ -59,7 +59,7 @@ raw_tbl_queries_config = {
 }
 
 db_config = {
-    'raw_db_name': 'raw_source_data'
+    'raw_db_name': 'raw_source_data.db'
 }
 
 api_key = 'd00187d387aa9617ed13b01d9577f3d0'

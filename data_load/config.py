@@ -1,4 +1,4 @@
-db_name = 'sales_data_aggregations'
+db_name = 'sales_data_aggregations.db'
 
 
 # Create a table in the database

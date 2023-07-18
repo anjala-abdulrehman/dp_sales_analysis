@@ -5,6 +5,7 @@ logging.basicConfig(format='%(asctime)s %(message)s')
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
+
 class Orders(BaseModel):
     order_id: int = Field(..., gt=0)
     customer_id: int = Field(..., gt=0)
@@ -42,11 +43,10 @@ class Users(BaseModel):
 
 
 def validate_users_data(data):
-    users = [Users(**row) for _, row in data.iterrows()]
+    users = [Users(**row) for _, row in data.iterrows()]  # Nothing to be returned, only to throw error
     logger.info("validation successful for users data")
 
 
 def validate_orders_data(data):
-    order = [Orders(**row) for _, row in data.iterrows()]
+    order = [Orders(**row) for _, row in data.iterrows()] # Nothing to be returned, only to throw error
     logger.info("validation successful for orders data")
-
